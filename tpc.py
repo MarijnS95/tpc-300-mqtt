@@ -1,5 +1,6 @@
 # Based on http://domoticx.com/kaku-tpc-300-laten-schakelen-via-linux/
 
+import threading
 import usb.core
 import usb.util
 
@@ -32,7 +33,12 @@ ep = usb.util.find_descriptor(
 assert ep is not None
 
 
+usb_lock = threading.Lock()
+
+
 def control_channel(channel, state):
     assert 0 <= channel <= 255
     result = [0x5A, channel, 0x23 if state else 1, 0x05]
+    usb_lock.acquire()
     ep.write(result)
+    usb_lock.release()
