@@ -44,33 +44,6 @@ Workaround:
 $ chmod -R a+rwx /dev/bus/usb/
 ```
 
-### Compile and push `libusb-1.0`
-
-(Bundled `libusb-0.1.so.4` - even if fixing the search path to add `.4` - doesn't find any devices)
-
-### Make PyUSB find `libusb-1.0` that we pushed above
-
-For some reason `ctypes.util.find_library` is... Broken?
-
-```diff
-diff --git a/usr/lib/python3.8/site-packages/usb/libloader.py b/usr/lib/python3.8/site-packages/usb/libloader.py
-index b4bea55..e44a1c8 100644
---- a/usr/lib/python3.8/site-packages/usb/libloader.py
-+++ b/usr/lib/python3.8/site-packages/usb/libloader.py
-@@ -97,6 +97,12 @@ def locate_library (candidates, find_library=ctypes.util.find_library):
-         libname = find_library(candidate)
-         if libname:
-             return libname
-+
-+        from os import path
-+        libname = f"/usr/lib/lib{candidate}.so"
-+        if path.isfile(libname):
-+            _LOGGER.error(f"Found `{libname}` through `path.isfile`, `{find_library}` failed this")
-+            return libname
-     # -- end for
-     return None
-```
-
 ### Finally, start the server
 
 ```console

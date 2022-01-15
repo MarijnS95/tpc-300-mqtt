@@ -7,9 +7,14 @@ os.environ["PYUSB_DEBUG"] = "error"
 import threading
 import usb.core
 import usb.util
+import usb.backend.libusb0
+
+backend = usb.backend.libusb0.get_backend(
+    find_library=lambda _: "/usr/lib/libusb-0.1.so.4"
+)
 
 # TPC-300
-dev = usb.core.find(idVendor=0xFEFF, idProduct=0x0802)
+dev = usb.core.find(idVendor=0xFEFF, idProduct=0x0802, backend=backend)
 
 if dev is None:
     raise ValueError("Device not found")
