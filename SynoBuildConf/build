@@ -1,0 +1,5 @@
+#!/bin/bash
+# Copyright (C) 2000-2020 Synology Inc. All rights reserved.
+
+# Nothing to build
+exit 0

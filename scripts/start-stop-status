@@ -1,0 +1,38 @@
+#!/bin/sh
+# Copyright (C) 2000-2020 Synology Inc. All rights reserved.
+
+case $1 in
+	start)
+		### Start this package.
+		# /usr/local/bin/kaku-tpc-server
+		server_ip=0.0.0.0
+		server_port=8080
+		# I don't think this is the intended use of these paths....
+		cd /var/packages/KakuTPCServer/target/usr/local/share/
+		id # TODO: We're `KakuTPCServer`
+		PYUSB_DEBUG=debug uvicorn tpc-server:app --host $server_ip --port $server_port
+		echo "the package has been started" > $SYNOPKG_TEMP_LOGFILE
+		exit 0
+	;;
+	stop)
+		### Stop this package.
+		pkill uvicorn
+		echo "the package has been stopped" > $SYNOPKG_TEMP_LOGFILE
+		exit 0
+	;;
+	status)
+		### Check package alive.
+		# if [ -h "/usr/local/bin/kaku-tpc-server" ]; then
+		if [ -h "/var/packages/KakuTPCServer/target/usr/local/share/tpc-server.py" ]; then
+			exit 0
+		else
+			exit 1
+		fi
+	;;
+	killall)
+		;;
+	log)
+		exit 0
+	;;
+esac
+

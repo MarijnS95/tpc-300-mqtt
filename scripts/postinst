@@ -1,0 +1,32 @@
+#!/bin/sh
+# Copyright (C) 2000-2020 Synology Inc. All rights reserved.
+
+### This script will be executed when package installed and upgraded.
+### Actions after package installed.
+### ex. create database, create symbolic link...
+
+if [ -z "$server_ip"]; then
+    server_ip=0.0.0.0
+fi
+
+# TODO: Called when upgraded, but port is not retained!
+# if [ -z "$server_port" ]; then
+#     echo "No port defined!"
+#     exit 1
+# fi
+
+# TODO: we must store or update the settings somehow...
+
+# echo "Configuring uvicorn server start at $server_ip:$server_port"
+
+# echo "PYUSB_DEBUG=debug sudo uvicorn tpc-server:app --host $server_ip --port $server_port" > /usr/local/bin/kaku-tpc-server
+# chmod a+x /usr/local/bin/kaku-tpc-server
+
+# UDEV_RULES=/usr/lib/udev/rules.d/70-kaku-tpc.rules
+# > ${UDEV_RULES}
+# echo "#author: Marijn Suijten"  >> ${UDEV_RULES}
+# echo "" >> ${UDEV_RULES}
+# echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="feff", ATTRS{idProduct}=="0802", MODE="0666", RUN+=""' >> ${UDEV_RULES}
+udevadm control --reload-rules
+
+exit 0

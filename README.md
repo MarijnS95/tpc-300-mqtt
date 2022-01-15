@@ -2,7 +2,27 @@
 
 Control individual KaKu lights through the TPC-300, exposed as a REST service. This is an alternative to building your own `433.92MHz` radio on eg. an Arduino.
 
-## Usage
+## Build and run Synology package
+
+1. Setup your environment: https://help.synology.com/developer-guide/getting_started/prepare_environment.html (note that some steps need root because of unpacking special files from the root/env tar archive...);
+2. Clone this repo into the `source/` directory inside the `toolkit` folder created in the previous step;
+3. In the toolkit folder, run `./pkgscripts-ng/PkgCreate.py -c -v 7.0 KakuTPCServer`;
+4. The resulting package should now reside in `result_spk/KakuTPCServer-1.0.0-0001`.
+
+Then, to install:
+
+1. From a root shell, run the UDEV workaround from below: `chmod -R a+rwx /dev/bus/usb/`.
+   Hopefully this permission issue can be fixed with a proper UDEV rule soon™;
+2. Install `pip` packages as shown below (TODO: automate this in the package);
+3. Install the resulting package from above through the Synology package manager;
+4. Logs can be read with for example `tail -fn100 /var/log/packages/KakuTPCServer.log` (follow, and print the most recent `100` lines).
+
+### TODO
+- Configuration properties during installation don't do anything, since we can't write a "startup file" (see commented-out code in `postinst`);
+- Fix the UDEV rules to not need a manual (and broad) `chmod` on `/dev/bus/usb`;
+- Automagically package and/or install `requirements.txt` through `pip`?
+
+## Run from shell on Synology NAS
 
 ### Install Python packages on the target (or pre-download on host)
 

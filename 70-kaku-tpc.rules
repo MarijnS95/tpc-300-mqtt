@@ -1,0 +1,5 @@
+#author: Marijn Suijten
+
+SUBSYSTEM=="usb", ATTRS{idVendor}=="feff", ATTRS{idProduct}=="0802", MODE="0666"
+# TODO: (Re)start the service with `, RUN+=""`
+# TODO: Grant rights for `KakuTPCServer:KakuTPCServer`?

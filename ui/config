@@ -1,0 +1,14 @@
+{
+    ".url": {
+        "Suijten.Marijn.KakuTPCServer": {
+            "allUsers": true,
+            "desc": "Example Package",
+            "icon": "images/{0}.png",
+            "port": "8080",
+            "protocol": "http",
+            "title": "Example Package",
+            "type": "url",
+            "url": "/"
+        }
+    }
+}
