@@ -1,5 +1,9 @@
 # Based on http://domoticx.com/kaku-tpc-300-laten-schakelen-via-linux/
 
+import os
+
+os.environ["PYUSB_DEBUG"] = "error"
+
 import threading
 import usb.core
 import usb.util
