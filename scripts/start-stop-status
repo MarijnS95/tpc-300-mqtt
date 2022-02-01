@@ -10,7 +10,7 @@ case $1 in
 		# I don't think this is the intended use of these paths....
 		cd /var/packages/KakuTPCServer/target/usr/local/share/
 		id # TODO: We're `KakuTPCServer`
-		PYUSB_DEBUG=debug uvicorn tpc-server:app --host $server_ip --port $server_port
+		PYUSB_DEBUG=debug nohup uvicorn tpc-server:app --host $server_ip --port $server_port &
 		echo "the package has been started" > $SYNOPKG_TEMP_LOGFILE
 		exit 0
 	;;
