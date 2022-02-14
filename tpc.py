@@ -4,10 +4,14 @@ import os
 
 os.environ["PYUSB_DEBUG"] = "error"
 
+import logging
 import threading
+import usb.backend.libusb0
 import usb.core
 import usb.util
-import usb.backend.libusb0
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 backend = usb.backend.libusb0.get_backend(
     find_library=lambda _: "/usr/lib/libusb-0.1.so.4"
@@ -19,11 +23,11 @@ dev = usb.core.find(idVendor=0xFEFF, idProduct=0x0802, backend=backend)
 if dev is None:
     raise ValueError("Device not found")
 
-print("%r" % (dev,))
+logger.debug(f"{dev}")
 
 if dev.is_kernel_driver_active(0) is True:
     dev.detach_kernel_driver(0)
-    print("Now reading data")
+    logger.debug("Now reading data")
 dev.set_configuration()
 
 cfg = dev.get_active_configuration()
@@ -47,7 +51,7 @@ usb_lock = threading.Lock()
 
 def control_channel(channel, state):
     assert 0 <= channel <= 255
-    result = [0x5A, channel, 0x23 if state else 1, 0x05]
+    command = [0x5A, channel, 0x23 if state else 1, 0x05]
     usb_lock.acquire()
-    ep.write(result)
+    ep.write(command)
     usb_lock.release()
