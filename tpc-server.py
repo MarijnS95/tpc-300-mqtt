@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-import paho.mqtt.subscribe as subscribe
+import paho.mqtt.client as mqtt
 import tpc
 import logging
 import sys
@@ -19,4 +19,15 @@ def set_light(client, userdata, msg):
     tpc.control_channel(index, state)
 
 
-subscribe.callback(set_light, "tpc-300/light/+/set", hostname=sys.argv[1])
+def on_connect(client, userdata, flags, rc):
+    logger.debug(f"Connected to mqtt with result code {rc}")
+    client.subscribe("tpc-300/light/+/set")
+    client.publish("tpc-300/status", "online", qos=2, retain=True)
+
+
+client = mqtt.Client()
+client.will_set("tpc-300/status", "offline", qos=2, retain=True)
+client.on_connect = on_connect
+client.on_message = set_light
+client.connect(sys.argv[1])
+client.loop_forever()
