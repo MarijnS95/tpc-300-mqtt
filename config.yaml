@@ -1,0 +1,16 @@
+name: "KlikAanKlikUit TPC-300 over MQTT"
+description: "Control individual KaKu lights through the TPC-300, exposed as an MQTT service"
+url: https://github.com/MarijnS95/tpc-300-mqtt
+version: "1.0.0"
+slug: "tpc-300-mqtt"
+init: false
+usb: true
+services:
+  - mqtt:need
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+panel_icon: mdi:remote

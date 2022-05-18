@@ -7,19 +7,18 @@ os.environ["PYUSB_DEBUG"] = "error"
 import logging
 import threading
 
-import usb.backend.libusb0
+import usb.backend.libusb1
 import usb.core
 import usb.util
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-backend = usb.backend.libusb0.get_backend(
-    find_library=lambda _: "/usr/lib/libusb-0.1.so.4"
-)
+# Alpine installs this lib only with .0 suffix:
+usb.backend.libusb1.get_backend(find_library=lambda _: "/usr/lib/libusb-1.0.so.0")
 
 # TPC-300
-dev = usb.core.find(idVendor=0xFEFF, idProduct=0x0802, backend=backend)
+dev = usb.core.find(idVendor=0xFEFF, idProduct=0x0802)
 
 if dev is None:
     raise ValueError("Device not found")
