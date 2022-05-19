@@ -6,6 +6,7 @@ os.environ["PYUSB_DEBUG"] = "error"
 
 import logging
 import threading
+
 import usb.backend.libusb0
 import usb.core
 import usb.util

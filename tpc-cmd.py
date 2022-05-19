@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 import argparse
+import logging
+
+logging.basicConfig(format="%(asctime)s:" + logging.BASIC_FORMAT)
 
 parser = argparse.ArgumentParser(
     description="Control KlikAanKlikUit lights over a USB-connected TPC-300"
@@ -10,7 +13,6 @@ parser.add_argument("channel", type=int, nargs="?")
 args = parser.parse_args()
 
 import tpc
-
 
 if args.channel is None:
     import time

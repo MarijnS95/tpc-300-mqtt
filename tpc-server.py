@@ -1,13 +1,15 @@
 #! /usr/bin/env python3
 
-import paho.mqtt.client as mqtt
-import tpc
 import logging
 import sys
+
+import paho.mqtt.client as mqtt
 
 logging.basicConfig(format="%(asctime)s:" + logging.BASIC_FORMAT)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+
+import tpc
 
 
 def set_light(client, userdata, msg):
