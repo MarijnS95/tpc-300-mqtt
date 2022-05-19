@@ -1,9 +1,18 @@
 #! /usr/bin/env python3
 
+import argparse
 import logging
 import sys
 
 import paho.mqtt.client as mqtt
+
+parser = argparse.ArgumentParser(
+    description="Control KlikAanKlikUit lights over a USB-connected TPC-300, with commands received from MQTT"
+)
+parser.add_argument("mqtt_host", help="MQTT broker address")
+parser.add_argument("mqtt_username", help="MQTT username")
+parser.add_argument("mqtt_password", help="MQTT password")
+args = parser.parse_args()
 
 logging.basicConfig(format="%(asctime)s:" + logging.BASIC_FORMAT)
 logger = logging.getLogger(__name__)
@@ -31,5 +40,6 @@ client = mqtt.Client()
 client.will_set("tpc-300/status", "offline", qos=2, retain=True)
 client.on_connect = on_connect
 client.on_message = set_light
-client.connect(sys.argv[1])
+client.username_pw_set(args.mqtt_username, args.mqtt_password)
+client.connect(args.mqtt_host)
 client.loop_forever()
